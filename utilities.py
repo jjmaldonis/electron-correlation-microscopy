@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import scipy.spatial.distance
 from PIL import Image
@@ -12,8 +13,11 @@ def load_matplotlib():
     import matplotlib.image as mpimg
 
 
-def load_pixel_positions():
-    mask = np.loadtxt("nanowire_background.txt", skiprows=1)
+def load_pixel_positions(filename=None):
+    if filename is None:
+        head, tail = os.path.split(__file__)
+        filename = os.path.join(head, "nanowire_background.txt")
+    mask = np.loadtxt(filename, skiprows=1)
     mask = np.rot90(np.fliplr(mask))
     pixel_positions = list(zip(*np.where(mask == 255)))
     return pixel_positions
