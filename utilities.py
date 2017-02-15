@@ -19,7 +19,6 @@ def load_pixel_positions():
     return pixel_positions
 
 
-
 def load(fn):
     return np.array(Image.open(fn))
 

@@ -1,8 +1,7 @@
 import os, sys
 import numpy as np
-import scipy.signal
-from scipy.optimize import curve_fit
-from PIL import Image
+from utilities import load_pixel_positions
+from utilities import load_tif_data
 
 
 def g2(data, dt):
@@ -48,46 +47,33 @@ def fast_g4(data, dts_range, dtl_range):
     return results_g4
 
 
-#def calculate(data, i, j):
-def calculate(arg):
-    data, i, j = arg
+#def calculate(arg):
+def calculate(strip, i, j):
+    #strip, i, j = arg
     dts_range = (1, 500)
     dtl_range = (100, 3000)
-    results = fast_g4(data, dts_range, dtl_range)
-    fn = "g4results/C250_0.1s_{i}_{j}.g4data.txt".format(i=i, j=j)
+    results = fast_g4(strip, dts_range, dtl_range)
+    fn = "C250_0.1s_{i}_{j}.g4time.txt".format(i=i, j=j)
     np.savetxt(fn, results)
     print(fn)
     return None
 
 
-def load(fn):
-    return Image.open(fn)
-
-
 def main():
-    data = np.zeros((247, 250, 4000), dtype=np.float)
-    iis = [str(i).zfill(4) for i in xrange(4000)]
-    fns = ["tif/C250_0.1s_{i}.tif".format(i=str(i).zfill(4)) for i in xrange(4000)]
-    #assert "C250_0.1s_{i}.tif".format(i=i) in tifs
+    NPROCS = 1
+    data = load_tif_data(nprocs=NPROCS)
 
-    from multiprocessing import Pool
-    pool = Pool(processes=20)
-    for i, temp in enumerate(pool.map(load, fns)):
-        print("Loaded {}".format(i))
-        data[:,:,i] = temp
-    print("Finished loading!")
-    pool.close()
-    pool.join()
+    i, j = sys.argv[1], sys.argv[2]
+    i = int(i)
+    j = int(j)
+    calculate(data[i,j,:], i, j)
 
-    mask = np.loadtxt("nanowire_background.txt", skiprows=1)
-    pixel_positions = zip(*np.where(mask == 255))
-
-    gen = ( (data[i,j,:], i, j) for i,j in pixel_positions )
-    pool = Pool(processes=20)
-    pool.map(calculate, gen)
-    pool.close()
-    pool.join()
-    print("Finished!")
+    #gen = ( (data[i,j,:], i, j) for i,j in pixel_positions )
+    #pool = Pool(processes=NPROCS)
+    #pool.map(calculate, gen)
+    #pool.close()
+    #pool.join()
+    #print("Finished!")
 
 
 if __name__ == "__main__":
