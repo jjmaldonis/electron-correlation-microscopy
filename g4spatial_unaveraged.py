@@ -118,8 +118,8 @@ if __name__ == "__main__":
     ax.spines['right'].set_color('none')
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
-    DT = 0.1
-    DX = 0.225
+    DT = 0.25
+    DX = 0.3293
     plt.xticks(np.arange(0, _image.shape[1], 2), DT*np.array(np.arange(dtl_range[0], dtl_range[1], 2, dtype=float), dtype=int))
     plt.yticks(np.arange(0, _image.shape[0], 1), DX*np.arange(dts_range[0], dts_range[1], 1, dtype=float))
     divider = make_axes_locatable(ax)

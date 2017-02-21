@@ -16,9 +16,9 @@ def load_matplotlib():
 def load_pixel_positions(filename=None):
     if filename is None:
         head, tail = os.path.split(__file__)
-        filename = os.path.join(head, "nanowire_background.txt")
+        filename = os.path.join(head, "nanowire_background_C246.txt")
     mask = np.loadtxt(filename, skiprows=1)
-    mask = np.rot90(np.fliplr(mask))
+    mask = np.rot90(np.fliplr(mask))  # Correct for the mask slightly, see notebook title "Aligning the Mask with the Tifs"
     pixel_positions = list(zip(*np.where(mask == 255)))
     return pixel_positions
 
@@ -28,25 +28,14 @@ def load(fn):
 
 
 def load_tif_data(nframes, nprocs=4):
-    fns = ["tif/C250_0.1s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
+    fns = ["Aligned_C246_0.25s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
 
-    data = np.zeros((247, 250, nframes), dtype=np.float)
+    data = np.zeros((249, 252, nframes), dtype=np.float)
 
-    if nprocs == 1:
-        for i, fn in enumerate(fns):
-            data[:,:,i] = load(fn)
-            #if i % 100 == 0:
-            #    print("Loaded {}%".format(round(100.*i/nframes)))
-    else:
-        from multiprocessing import Pool
-        pool = Pool(processes=nprocs)
-        for i, temp in enumerate(pool.map(load, fns)):
-            #if i % 100 == 0:
-            #    print("Loaded {}%".format(round(100.*i/nframes)))
-            data[:,:,i] = temp
-        pool.close()
-        pool.join()
+    for i, fn in enumerate(fns):
+        data[:,:,i] = load(fn)[:, 1:-3]  # Correct for the mask slightly, see notebook title "Aligning the Mask with the Tifs"
     print("Finished loading data!")
+
     return data
 
 
@@ -58,7 +47,6 @@ def load_R_pixel_positions(pixel_positions, R, width):
     for k, (x,y) in enumerate(pixel_positions):
         fn = "R2xy_data/R={r}/R={r}.({x},{y}).npy".format(r=R, x=x, y=y)
         try:
-            #try:
             r_away = np.load(fn)
         except IOError:
             dists2 = scipy.spatial.distance.cdist([[x,y]], pixel_positions, metric="sqeuclidean").flatten() ###
