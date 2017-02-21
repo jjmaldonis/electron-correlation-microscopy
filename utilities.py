@@ -56,26 +56,16 @@ def load_R_pixel_positions(pixel_positions, R, width):
 
     R_pixel_positions = {}
     for k, (x,y) in enumerate(pixel_positions):
-        #fn = "R2xy_data/R={r}.({x},{y}).npy".format(r=R, x=x, y=y)
         fn = "R2xy_data/R={r}/R={r}.({x},{y}).npy".format(r=R, x=x, y=y)
         try:
             #try:
             r_away = np.load(fn)
-            #if k % 1000 == 0:
-            #    print("Loaded precomputed R pixel position data:", R, k, len(pixel_positions))
-            #except IOError:
-            #    fn = "R2xy_data/R={r}/R={r}.({x},{y}).npy".format(r=R, x=x, y=y)
-            #    r_away = np.load(fn)
         except IOError:
-            #fn = "R2xy_data/R={r}.({x},{y}).npy".format(r=R, x=x, y=y)
-            #print("WARNING! Could not find {}".format(fn))
             dists2 = scipy.spatial.distance.cdist([[x,y]], pixel_positions, metric="sqeuclidean").flatten() ###
             r_away = np.where( (R2_start <= dists2) & (dists2 < R2_end) )[0]
             r_away = [pixel_positions[i] for i in r_away]
             r_away = np.array(r_away, dtype=np.int32)
             np.save(file=fn, arr=r_away)
-            #if k % 100 == 0:
-            #    print("Precomputed R pixel position data:", R, k, len(pixel_positions))
 
         R_pixel_positions[(R,x,y)] = r_away
 
