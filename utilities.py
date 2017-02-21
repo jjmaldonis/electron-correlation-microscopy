@@ -27,7 +27,7 @@ def load(fn):
     return np.array(Image.open(fn))
 
 
-def load_tif_data(nprocs=4, nframes):
+def load_tif_data(nframes, nprocs=4):
     fns = ["tif/C250_0.1s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
 
     data = np.zeros((247, 250, nframes), dtype=np.float)
