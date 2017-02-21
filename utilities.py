@@ -27,22 +27,22 @@ def load(fn):
     return np.array(Image.open(fn))
 
 
-def load_tif_data(nprocs=4):
-    fns = ["tif/C250_0.1s_{i}.tif".format(i=str(i).zfill(4)) for i in range(4000)]
+def load_tif_data(nprocs=4, nframes):
+    fns = ["tif/C250_0.1s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
 
-    data = np.zeros((247, 250, 4000), dtype=np.float)
+    data = np.zeros((247, 250, nframes), dtype=np.float)
 
     if nprocs == 1:
         for i, fn in enumerate(fns):
             data[:,:,i] = load(fn)
             #if i % 100 == 0:
-            #    print("Loaded {}%".format(round(100.*i/4000)))
+            #    print("Loaded {}%".format(round(100.*i/nframes)))
     else:
         from multiprocessing import Pool
         pool = Pool(processes=nprocs)
         for i, temp in enumerate(pool.map(load, fns)):
             #if i % 100 == 0:
-            #    print("Loaded {}%".format(round(100.*i/4000)))
+            #    print("Loaded {}%".format(round(100.*i/nframes)))
             data[:,:,i] = temp
         pool.close()
         pool.join()

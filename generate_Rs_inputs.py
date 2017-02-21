@@ -1,4 +1,3 @@
 with open("input_Rs.in", "w") as f:
-    for i in range(100):
-        if i not in [11, 12, 13, 14, 15, 16, 21, 22, 23, 31, 32, 33, 41, 42, 51, 52, 53, 54, 55, 56, 61, 62, 71, 72, 81, 82, 83, 84, 85, 86, 87, 88, 91]:
-            f.write("{}\n".format(i))
+    for i in range(11):
+        f.write("{}\n".format(i))
