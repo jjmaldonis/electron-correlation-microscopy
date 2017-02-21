@@ -49,7 +49,7 @@ def run_one(x, y, dt, R, width, pixel_positions=None, data=None, R_pixel_positio
     if pixel_positions is None:
         pixel_positions = load_pixel_positions()
     if data is None:
-        data = load_tif_data(nprocs=1, nframes=4071)
+        data = load_tif_data(nframes=4071, nprocs=1)
     if R_pixel_positions is None:
         R_pixel_positions = load_R_pixel_positions(pixel_positions, R, width)
 
@@ -64,7 +64,7 @@ def run_one(x, y, dt, R, width, pixel_positions=None, data=None, R_pixel_positio
 
 def run_many(dts, Rs):
     pixel_positions = load_pixel_positions()
-    data = load_tif_data(nprocs=1, nframes=4071)
+    data = load_tif_data(nframes=4071, nprocs=1)
 
     #dts = list(range(1, 500))
     width = 1.0
@@ -83,7 +83,7 @@ def run_many(dts, Rs):
 
 if __name__ == "__main__":
     pixel_positions = load_pixel_positions()
-    data = load_tif_data(nprocs=1, nframes=4071)
+    data = load_tif_data(nframes=4071, nprocs=1)
 
     width = 1.0
     x, y = sys.argv[1:]
