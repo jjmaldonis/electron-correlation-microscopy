@@ -29,7 +29,6 @@ export PATH=$(pwd)/python/bin:$PATH
 # Setup for script
 mkdir spatial_results
 cd R2xy_data
-#tar -xf R*.tar.gz
 tar -xf R=10.0.tar.gz
 tar -xf R=1.0.tar.gz
 tar -xf R=2.0.tar.gz

@@ -54,10 +54,6 @@ def run_one(x, y, dt, R, width, pixel_positions=None, data=None, R_pixel_positio
         R_pixel_positions = load_R_pixel_positions(pixel_positions, R, width)
 
     g4 = g4_spatial(data, pixel_positions, x=x, y=y, dt=dt, R=R, width=width, R_pixel_positions=R_pixel_positions, nprocs=1)
-    #print(dt, R, g4)
-
-    #with open("spatial_results/dt={dt}.R={R}.data".format(dt=dt, R=R), "w") as f:
-    #    f.write(str(g4))
 
     return g4
 
@@ -66,9 +62,7 @@ def run_many(dts, Rs):
     pixel_positions = load_pixel_positions()
     data = load_tif_data(nframes=4071, nprocs=1)
 
-    #dts = list(range(1, 500))
     width = 1.0
-    #Rs = np.arange(1., 100., width)
 
     import time
     for R in Rs:
@@ -89,13 +83,13 @@ if __name__ == "__main__":
     x, y = sys.argv[1:]
     x = int(x)
     y = int(y)
-    image = np.zeros((10,500))
+    image = np.zeros((10,100))
     image.fill(np.nan)
     for R in range(1,11):
         R = float(R)
         start = time.time()
         R_pixel_positions = load_R_pixel_positions(pixel_positions, R, width)
-        for dt in range(1,501):
+        for dt in range(1,101):
             g4 = run_one(x, y, dt, R, width, pixel_positions=pixel_positions, data=data, R_pixel_positions=R_pixel_positions)
             image[int(R)-1,dt-1] = g4
     np.savetxt("({x},{y}).data".format(x=x, y=y), image)
