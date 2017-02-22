@@ -28,7 +28,7 @@ def load(fn):
 
 
 def load_tif_data(nframes, nprocs=4):
-    fns = ["Aligned_C246_0.25s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
+    fns = ["tif/Aligned_C246_0.25s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
 
     data = np.zeros((249, 252, nframes), dtype=np.float)
 
