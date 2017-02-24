@@ -30,10 +30,11 @@ def load(fn):
 def load_tif_data(nframes, nprocs=4):
     fns = ["tif/Aligned_C246_0.25s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
 
-    data = np.zeros((249, 252, nframes), dtype=np.float)
+    data = np.zeros((249, 248, nframes), dtype=np.float)
 
     for i, fn in enumerate(fns):
-        data[:,:,i] = load(fn)[:, 1:-3]  # Correct for the mask slightly, see notebook title "Aligning the Mask with the Tifs"
+        temp = load(fn)[:, 1:-3]  # Correct for the mask slightly, see notebook title "Aligning the Mask with the Tifs"
+        data[:,:,i] = temp
     print("Finished loading data!")
 
     return data
