@@ -1,8 +1,6 @@
 universe = vanilla
 
-###requirements = (OpSys == "LINUX") && (OpSysMajorVer == 6)  && (Target.PoolName =!= "CHTC")
 requirements = (OpSys == "LINUX") && (OpSysMajorVer == 6)
-####requirements = (Target.PoolName =!= "CHTC")
 
 +WantFlocking = true
 +WantGlidein = true
@@ -20,8 +18,7 @@ log = $(Cluster).log
 
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
-#transfer_input_files = run.sh, g4spatial.py, utilities.py, nanowire_background.txt, R2xy_data/R=$(R).tar.gz
-transfer_input_files = run.sh, g4spatial_unaveraged.py, utilities.py, nanowire_background_C234.txt, R2xy_data
+transfer_input_files = run.sh, g4spatial_unaveraged.py, utilities.py, nanowire_background_C238.txt, R2xy_data
 
 request_cpus = 1
 request_memory = 2400MB

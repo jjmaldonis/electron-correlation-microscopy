@@ -16,10 +16,9 @@ def load_matplotlib():
 def load_pixel_positions(filename=None):
     if filename is None:
         head, tail = os.path.split(__file__)
-        filename = os.path.join(head, "nanowire_background_C234.txt")
+        filename = os.path.join(head, "nanowire_background_C238.txt")
     mask = np.loadtxt(filename, skiprows=1)
     mask = np.rot90(np.fliplr(mask))  # Correct for the mask slightly, see notebook title "Aligning the Mask with the Tifs"
-    mask = mask[:, 2:]  # For C234
     pixel_positions = list(zip(*np.where(mask == 255)))
     return pixel_positions
 
@@ -29,12 +28,12 @@ def load(fn):
 
 
 def load_tif_data(nframes, nprocs=4):
-    fns = ["tif/C234_2s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
+    fns = ["tif/C238_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
 
-    data = np.zeros((208, 198, nframes), dtype=np.float)
+    data = np.zeros((210, 221, nframes), dtype=np.float)
 
     for i, fn in enumerate(fns):
-        data[:,:,i] = load(fn)
+        data[:,:,i] = load(fn)[:, :-1]  # For C238
     print("Finished loading data!")
 
     return data
