@@ -5,16 +5,16 @@ echo $@
 
 #wget http://proxy.chtc.wisc.edu/SQUID/maldonis/anaconda2.tar.gz
 wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/python.tar.gz
-wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/tif_C246.tar.gz
+wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/tif_C234.tar.gz
 
 # untar your Python installation and other necessary files
 #tar -xf anaconda2.tar.gz
 tar -xzf python.tar.gz
-tar -xzf tif_C246.tar.gz
+tar -xzf tif_C234.tar.gz
 
 #rm anaconda2.tar.gz
 rm python.tar.gz
-rm tif_C246.tar.gz
+rm tif_C234.tar.gz
 
 # make sure the script will use your Python installation
 #export PATH=$(pwd)/anaconda2/bin:$PATH

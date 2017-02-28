@@ -45,11 +45,11 @@ def g4_spatial(data, pixel_positions, x, y, dt, R, width, R_pixel_positions=None
     return sum(totals.values())
 
 
-def run_one(x, y, dt, R, width, pixel_positions=None, data=None, R_pixel_positions=None):
+def run_one(nframes, x, y, dt, R, width, pixel_positions=None, data=None, R_pixel_positions=None):
     if pixel_positions is None:
         pixel_positions = load_pixel_positions()
     if data is None:
-        data = load_tif_data(nframes=4071, nprocs=1)
+        data = load_tif_data(nframes=nframes, nprocs=1)
     if R_pixel_positions is None:
         R_pixel_positions = load_R_pixel_positions(pixel_positions, R, width)
 
@@ -58,9 +58,9 @@ def run_one(x, y, dt, R, width, pixel_positions=None, data=None, R_pixel_positio
     return g4
 
 
-def run_many(dts, Rs):
+def run_many(nframes, dts, Rs):
     pixel_positions = load_pixel_positions()
-    data = load_tif_data(nframes=4071, nprocs=1)
+    data = load_tif_data(nframes=nframes, nprocs=1)
 
     width = 1.0
 
@@ -77,7 +77,8 @@ def run_many(dts, Rs):
 
 if __name__ == "__main__":
     pixel_positions = load_pixel_positions()
-    data = load_tif_data(nframes=4071, nprocs=1)
+    nframes = 3967
+    data = load_tif_data(nframes, nprocs=1)
 
     width = 1.0
     x, y = sys.argv[1:]
@@ -90,7 +91,7 @@ if __name__ == "__main__":
         start = time.time()
         R_pixel_positions = load_R_pixel_positions(pixel_positions, R, width)
         for dt in range(1,101):
-            g4 = run_one(x, y, dt, R, width, pixel_positions=pixel_positions, data=data, R_pixel_positions=R_pixel_positions)
+            g4 = run_one(nframes, x, y, dt, R, width, pixel_positions=pixel_positions, data=data, R_pixel_positions=R_pixel_positions)
             image[int(R)-1,dt-1] = g4
     np.savetxt("({x},{y}).data".format(x=x, y=y), image)
 
@@ -112,8 +113,8 @@ if __name__ == "__main__":
     ax.spines['right'].set_color('none')
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
-    DT = 0.25
-    DX = 0.3293
+    DT = 2.0
+    DX = 0.33
     plt.xticks(np.arange(0, _image.shape[1], 2), DT*np.array(np.arange(dtl_range[0], dtl_range[1], 2, dtype=float), dtype=int))
     plt.yticks(np.arange(0, _image.shape[0], 1), DX*np.arange(dts_range[0], dts_range[1], 1, dtype=float))
     divider = make_axes_locatable(ax)
