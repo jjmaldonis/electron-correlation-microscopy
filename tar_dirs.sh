@@ -1,5 +1,5 @@
-#tar -zcvf R=1.0.tar.gz R\=1.0/
-#tar -zcvf R=2.0.tar.gz R\=2.0/
+tar -zcvf R=1.0.tar.gz R\=1.0/
+tar -zcvf R=2.0.tar.gz R\=2.0/
 tar -zcvf R=3.0.tar.gz R\=3.0/
 tar -zcvf R=4.0.tar.gz R\=4.0/
 tar -zcvf R=5.0.tar.gz R\=5.0/
