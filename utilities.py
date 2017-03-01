@@ -58,7 +58,7 @@ def load_R_pixel_positions(pixel_positions, R, width):
         R_pixel_positions[(R,x,y)] = r_away
 
     for k, v in R_pixel_positions.items():
-        if v.ndim != 2:
+        if v.size > 0 and v.ndim != 2:
             R_pixel_positions[k] = v.reshape((1,2))
 
     print("Successfully loaded R={}".format(R))

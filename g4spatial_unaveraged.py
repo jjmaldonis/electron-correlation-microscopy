@@ -12,6 +12,12 @@ def _calculate(args):
     data, R_pixel_positions, dt, R, x, y, t_size, len_pixel_positions = args
     r_away = R_pixel_positions[(R,x,y)]
     r_size = len(r_away)
+    if t_size == 0:
+        t_size = 1
+    if r_size == 0:
+        r_size = 1
+    if len_pixel_positions == 0:
+        len_pixel_positions = 1
     denom = 1. / (t_size*r_size*len_pixel_positions)
     return sum(data[x,y,t] * data[dx,dy,t] * data[x,y,t+dt] * data[dx,dy,t+dt] * denom
                for dx, dy in r_away
