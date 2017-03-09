@@ -4,15 +4,15 @@ ls -l
 echo $@
 
 wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/python.tar.gz
-wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/tif_C242.tar.gz
+wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/tif_C238_2.tar.gz
 
 # untar your Python installation and other necessary files
 tar -xzf python.tar.gz
-tar -xzf tif_C242.tar.gz
+tar -xzf tif_C238_2.tar.gz
 
 #rm anaconda2.tar.gz
 rm python.tar.gz
-rm tif_C242.tar.gz
+rm tif_C238_2.tar.gz
 
 # make sure the script will use your Python installation
 export PATH=$(pwd)/python/bin:$PATH
