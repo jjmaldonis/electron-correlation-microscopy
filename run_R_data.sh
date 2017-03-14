@@ -4,11 +4,8 @@ ls -l
 echo $@
 
 wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/python.tar.gz
-
 tar -xzf python.tar.gz
-
 rm python.tar.gz
-
 export PATH=$(pwd)/python/bin:$PATH
 
 # Setup for script
@@ -19,6 +16,6 @@ mkdir "R2xy_data/R=$@.0"
 python create_R_data.py $@
 
 mv R2xy_data/* .
-mv R*/* .
+tar -zcvf R=$@.0.tar.gz R\=$@.0/
 
-rm -rf python
+rm -rf python R2xy_data

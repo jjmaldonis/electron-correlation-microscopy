@@ -13,13 +13,22 @@ def load_matplotlib():
     import matplotlib.image as mpimg
 
 
-def load_pixel_positions(filename=None):
+def load_mask(filename=None, dataset_key=None, rotate_mask=True, xstart=0, xend=None, ystart=0, yend=None):
     if filename is None:
         head, tail = os.path.split(__file__)
-        filename = os.path.join(head, "nanowire_background_C238_2.txt")
+        filename = os.path.join(head, "masks/mask_{key}.txt".format(key=dataset_key))
     mask = np.loadtxt(filename, skiprows=1)
     mask = np.rot90(np.fliplr(mask))
-    pixel_positions = list(zip(*np.where(mask == 255)))
+    if xend is None:
+        xend = mask.shape[0]
+    if yend is None:
+        yend = mask.shape[1]
+    mask = mask[xstart:xend, ystart:yend]
+    return mask
+
+
+def load_pixel_positions(mask):
+    pixel_positions = list(zip(*np.where(mask == 0)))
     return pixel_positions
 
 
@@ -27,13 +36,24 @@ def load(fn):
     return np.array(Image.open(fn))
 
 
-def load_tif_data(nframes, nprocs=4):
-    fns = ["tif/C238_1s_{i}.tif".format(i=str(i).zfill(4)) for i in range(nframes)]
+#def load_tif_data(nframes, xsize, ysize, filename_base, xstart=0, xend=None, ystart=0, yend=None):
+def load_tif_data(nframes, filename_base, xstart=0, xend=None, ystart=0, yend=None):
+    fns = ["tif/{base}_{i}.tif".format(i=str(i).zfill(4), base=filename_base) \
+           for i in range(nframes)]
 
-    data = np.zeros((230, 240, nframes), dtype=np.float)
+    # Load one tif to get the size
+    tif = load(fns[0])
+    xsize, ysize = tif.shape
+
+    if xend is None:
+        xend = xsize
+    if yend is None:
+        yend = ysize
+
+    data = np.zeros((xsize, ysize, nframes), dtype=np.float)
 
     for i, fn in enumerate(fns):
-        data[:,:,i] = load(fn)
+        data[:,:,i] = load(fn)[xstart:xend, ystart:yend]
     print("Finished loading data!")
 
     return data
@@ -63,5 +83,4 @@ def load_R_pixel_positions(pixel_positions, R, width):
 
     print("Successfully loaded R={}".format(R))
     return R_pixel_positions
-
 
