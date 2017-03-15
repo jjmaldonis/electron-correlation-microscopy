@@ -1,4 +1,7 @@
+mkdir results
+#mkdir results/dataset_key  # TODO
 mkdir R2xy_data
+mkdir R2xy_data/R=0.0
 mkdir R2xy_data/R=1.0
 mkdir R2xy_data/R=2.0
 mkdir R2xy_data/R=3.0

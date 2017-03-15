@@ -36,7 +36,6 @@ def load(fn):
     return np.array(Image.open(fn))
 
 
-#def load_tif_data(nframes, xsize, ysize, filename_base, xstart=0, xend=None, ystart=0, yend=None):
 def load_tif_data(nframes, filename_base, xstart=0, xend=None, ystart=0, yend=None):
     fns = ["tif/{base}_{i}.tif".format(i=str(i).zfill(4), base=filename_base) \
            for i in range(nframes)]
@@ -49,6 +48,9 @@ def load_tif_data(nframes, filename_base, xstart=0, xend=None, ystart=0, yend=No
         xend = xsize
     if yend is None:
         yend = ysize
+
+    xsize = xend - xstart
+    ysize = yend - ystart
 
     data = np.zeros((xsize, ysize, nframes), dtype=np.float)
 
