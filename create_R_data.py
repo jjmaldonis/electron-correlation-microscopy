@@ -22,18 +22,12 @@ def main():
     rscale = params["Rscale"]
     tscale = params["Tscale"]
 
-    mask = load_mask(dataset_key=params["dataset_key"], rotate_mask=params["rotate mask"],
-                     xstart=50, xend=100, ystart=50, yend=100  # TODO DELETE
-                    )
+    mask = load_mask(dataset_key=params["dataset_key"], rotate_mask=params["rotate mask"])
     print("Loaded mask.")
     pixel_positions = load_pixel_positions(mask)
     print("Loaded masked positions.")
 
-    data = load_tif_data(nframes,
-                         filename_base=params["tif_filename_base"],
-                         xstart=50, xend=100, ystart=50, yend=100  # TODO DELETE
-                        )
-    data = data[:, :, :100]  # TODO DELETE
+    data = load_tif_data(nframes, filename_base=params["tif_filename_base"])
     np.save(os.path.join(dir, "dtdata.npy"), data)
     print(data.shape)
     print("Loaded tif data.")
@@ -43,7 +37,6 @@ def main():
     # The data format is:
     # data[x, y, t] (i.e. the frame # is the last index)
 
-    #drshape = tuple(list(data.shape) + [dr_range[1]-dr_range[0]])
     drshape = data.shape
     print(drshape)
     drdata = np.zeros(drshape, dtype=np.float64)
@@ -53,15 +46,8 @@ def main():
     #drdata[:, :, :, 0] = data
     drdata = data.copy()
     print("Set initial data.")
-    #assert (drdata[:, :, :, 0] == data).all()
-    #assert len(np.where(~np.isnan(drdata[:, :, :, 1:]))[0]) == 0
-    #print("Ran checks on initial data.")
-    #np.save(os.path.join(dir, "initialized_drdata.npy"), drdata)
-    #print("Saved initial data.")
 
     width = 1.0
-    #R = sys.argv[1]
-    #R = float(R)
 
     zip2where = lambda t: (np.array(next(t)), np.array(next(t)))
 
@@ -83,7 +69,6 @@ def main():
 
         np.save(os.path.join(dir, "drdata_{R}.npy".format(R=int(R))), drdata)
 
-    #np.save(os.path.join(dir, "drdata.npy"), drdata)
 
 if __name__ == "__main__":
     main()
