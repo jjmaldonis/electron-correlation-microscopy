@@ -55,14 +55,21 @@ def main():
     # should split those calculations up. However, running all drs means we need to pass in
     # all the data. On the other hand, the dt size is 100, which will take quite a bit of time,
     # and we'd only be submitting 10 jobs. Still, I'm thinking about going that route.
-    for dr in range(*dr_range):
+    dr = int(sys.argv[2])
+    if os.path.exists(os.path.join(dir, "drdata_{}.npy".format(dr))):
         data_dr = np.load(os.path.join(dir, "drdata_{}.npy".format(dr)))
-        for dt in range(*dt_range):
-            result[dr, dt] = g4_from_slices(dt, dr, data0, data_dr)
-            print("dr", dr, "dt", dt, result[dr, dt])
+    elif os.path.exists("drdata_{}.npy".format(dr)):
+        data_dr = np.load("drdata_{}.npy".format(dr))
+    else:
+        raise RuntimeError("Couldn't find dr data")
 
-    np.savetxt(os.path.join(dir, "G4.txt"), result)
-    print("Saved G4 results to", os.path.join(dir, "G4.txt"))
+    #for dr in range(*dr_range):
+    for dt in range(*dt_range):
+        result[dr, dt] = g4_from_slices(dt, dr, data0, data_dr)
+        print("dr", dr, "dt", dt, result[dr, dt])
+
+    np.savetxt(os.path.join(dir, "G4_{}.txt".format(dr)), result)
+    print("Saved G4 results to", os.path.join(dir, "G4_{}.txt".format(dr)))
 
 
 if __name__ == "__main__":
