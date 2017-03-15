@@ -36,17 +36,6 @@ def main():
     print(result)
     np.savetxt("temp_result.txt", result)
 
-    """
-    data = np.load("drdata.npy")
-    result = np.zeros((20, 10), dtype=np.float)
-    for dt in range(20):
-        print(dt)
-        for dr in range(10):
-            result[dt, dr] = g4(dt, dr, data)
-    #result = g4(5, 2, data)
-    print(result)
-    np.savetxt("temp_result.txt", result)
-    """
 
 if __name__ == "__main__":
     main()

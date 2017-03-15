@@ -71,24 +71,15 @@ def main():
         R_pixel_positions = load_R_pixel_positions(pixel_positions, R, width)
         print("Finished loading R_pixel_positions")
 
-        #for (R,x,y), positions in R_pixel_positions.items():
-        #    R_pixel_positions[(R,x,y)] = zip2where(zip(*positions))
-        #print("Re-rendered R_pixel_positions into np.where format")
-        #rsize = len(R_pixel_positions)
-        #for i, ((R,x,y), positions) in enumerate(R_pixel_positions.items()):
-        #    #if i % 100 == 0 and i > 0:
-        #    #    print(i, rsize, end=" ")
-        #    drdata[x, y, :] = np.mean(data[positions], axis=0)
+        for (R,x,y), positions in R_pixel_positions.items():
+            R_pixel_positions[(R,x,y)] = zip2where(zip(*positions))
+        print("Re-rendered R_pixel_positions into np.where format")
+        rsize = len(R_pixel_positions)
 
-
-        for t in range(drdata.shape[2]):
-            print("t: {} / {}".format(t, drdata.shape[2]), end="; ")
-            for (R,x,y), positions in R_pixel_positions.items():
-                #drdata[x, y, t, int(R)] = np.mean([data[x, y, t] for x,y in positions])
-                drdata[x, y, t] = np.mean([data[x, y, t] for x,y in positions])
-                #drdata[x, y, t] = np.mean(data[positions, t])
-            #print(x, y, t, int(R), drdata[x, y, t, int(R)])
-            #print(x, y, t, int(R), drdata[x, y, t])
+        for i, ((R,x,y), positions) in enumerate(R_pixel_positions.items()):
+            #if i % 100 == 0 and i > 0:
+            #    print(i, rsize, end=" ", flush=True)
+            drdata[x, y, :] = np.mean(data[positions], axis=0)
 
         np.save(os.path.join(dir, "drdata_{R}.npy".format(R=int(R))), drdata)
 
