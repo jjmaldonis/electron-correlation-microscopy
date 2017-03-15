@@ -1,8 +1,14 @@
 Download the tif data and put the tifs into a directory called `tifs`. Clone this repo. This repo and the `tifs` directory should be located in the same directory.
 
-Run `setup.sh` in this repo.  This will set up the R-data collection and the time axis's normalization conditions, which you should then submit to Condor using `condor_submit submit_R_data.sh && condor_submit submit_T_norm.sh`.
+Tar the tifs into {dataset_key}.tar.gz and put it on SQUID.
 
-Once those Condor jobs have finished running, `mkdir R2xy_data && mv R*.tar.gz R2xy_data` and `TODO`.
+Create the mask and put it in the `masks/` directory with the name `mask_{dataset_key}.txt`.
 
-Submit the G4 calculations to Condor using `condor_submit submit_osg.sub`.
+Run `python setup.py`.
+
+Run `python create_R_data.py parameters/parameters_C234.json`,
+
+followed by `python g4spatial.py parameters/parameters_C234.json`.
+
+This will run everything serially.
 

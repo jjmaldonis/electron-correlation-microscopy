@@ -52,8 +52,9 @@ def main():
     drdata = data.copy()
     width = 1.0
 
-    zip2where = lambda t: (np.array(next(t)), np.array(next(t)))
+    zip2where = lambda t0: (np.array(next(t0)), np.array(next(t0)))
 
+    # I can parallelize this over R by passing R in as sys.argv[2]
     for R in range(*dr_range):
         R = float(R)
         print("dR: {}".format(R))
@@ -61,7 +62,10 @@ def main():
         print("Finished loading R_pixel_positions")
 
         for (R,x,y), positions in R_pixel_positions.items():
-            R_pixel_positions[(R,x,y)] = zip2where(zip(*positions))
+            try:
+                R_pixel_positions[(R,x,y)] = zip2where(zip(*positions))
+            except StopIteration:
+                R_pixel_positions[(R,x,y)] = [tuple(), tuple()]
         print("Re-rendered R_pixel_positions into np.where format")
         rsize = len(R_pixel_positions)
 

@@ -44,11 +44,16 @@ def main():
 
     result = np.zeros((rsize, tsize), dtype=np.float)
 
+    # G4 can be parallelized at the (dr, dt) scale, but then the loading overhead is almost
+    # as much as the calculation. In order to avoid that much unncessary calculation, we
+    # should split those calculations up. However, running all drs means we need to pass in
+    # all the data. On the other hand, the dt size is 100, which will take quite a bit of time,
+    # and we'd only be submitting 10 jobs. Still, I'm thinking about going that route.
     for dr in range(*dr_range):
         data_dr = np.load(os.path.join(dir, "drdata_{}.npy".format(dr)))
         for dt in range(*dt_range):
             result[dr, dt] = g4_from_slices(dt, dr, data0, data_dr)
-            print("dr", dr, "dt", dt, result[dt, dr])
+            print("dr", dr, "dt", dt, result[dr, dt])
 
     np.savetxt(os.path.join(dir, "G4.txt"), result)
     print("Saved G4 results to", os.path.join(dir, "G4.txt"))
