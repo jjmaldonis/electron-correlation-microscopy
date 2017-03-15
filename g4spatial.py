@@ -1,3 +1,6 @@
+import sys
+import os
+import json
 import numpy as np
 
 
@@ -26,15 +29,29 @@ def g4_from_slices(dt, dr, data0, data_dr):
 
 
 def main():
-    data0 = np.load("results/C234/dtdata.npy")
-    result = np.zeros((20, 10), dtype=np.float)
-    for dr in range(10):
-        data_dr = np.load("results/C234/drdata_{}.npy".format(dr))
-        for dt in range(20):
-            result[dt, dr] = g4_from_slices(dt, dr, data0, data_dr)
-            print(dr, dt, result[dt, dr])
-    print(result)
-    np.savetxt("temp_result.txt", result)
+    paramfile = sys.argv[1]
+    params = json.load(open(paramfile))
+
+    dir = "results/{}".format(params["dataset_key"])
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    dt_range = params["dT range"]
+    dr_range = params["dR range"]
+    tsize = dt_range[1] - dt_range[0]
+    rsize = dr_range[1] - dr_range[0]
+
+    data0 = np.load(os.path.join(dir, "dtdata.npy"))
+
+    result = np.zeros((rsize, tsize), dtype=np.float)
+
+    for dr in range(*dr_range):
+        data_dr = np.load(os.path.join(dir, "drdata_{}.npy".format(dr)))
+        for dt in range(*dt_range):
+            result[dr, dt] = g4_from_slices(dt, dr, data0, data_dr)
+            print("dr", dr, "dt", dt, result[dt, dr])
+
+    np.savetxt(os.path.join(dir, "G4.txt"), result)
+    print("Saved G4 results to", os.path.join(dir, "G4.txt"))
 
 
 if __name__ == "__main__":

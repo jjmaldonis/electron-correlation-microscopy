@@ -1,7 +1,24 @@
 import json
+import os
+import subprocess
 
 
 params = json.load(open("parameters.json"))
+
+
+
+# Make a bunch of directories for storing the results
+for direc in ["results", "results/{}".format(params["dataset_key"})]]:
+    if not os.path.exists(direc):
+        os.path.makedirs(direc)
+for direc in ["results/{}/R2xy_data/{}".format(params["dataset_key"}, R)] for R in range(*params["dr_range"])]:
+    if not os.path.exists(direc):
+        os.path.makedirs(direc)
+
+
+# This should pull the *.tar.gz from squid and untar it, revealing the "tif" folder
+# The mask must already be in place
+subprocess.call(["setup_py.sh", params["dataset_key"]])
 
 
 run_g4_spatial = """

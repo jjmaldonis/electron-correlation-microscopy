@@ -3,8 +3,16 @@ import os
 import json
 import time
 import numpy as np
+
 from utilities import load_pixel_positions, load_mask, load_tif_data, load_R_pixel_positions
 
+
+def create_tif_box(params, dir):
+    print("Creating TIF box...")
+    nframes = len(os.listdir("tif/"))
+    data = load_tif_data(nframes, filename_base=params["tif_filename_base"])
+    np.save(os.path.join(dir, "dtdata.npy"), data)
+    return data
 
 
 def main():
@@ -14,7 +22,6 @@ def main():
     dir = "results/{}".format(params["dataset_key"])
     if not os.path.exists(dir):
         os.makedirs(dir)
-    nframes = params["nframes"]
     dt_range = params["dT range"]
     dr_range = params["dR range"]
     tsize = dt_range[1] - dt_range[0]
@@ -27,26 +34,22 @@ def main():
     pixel_positions = load_pixel_positions(mask)
     print("Loaded masked positions.")
 
-    data = load_tif_data(nframes, filename_base=params["tif_filename_base"])
-    np.save(os.path.join(dir, "dtdata.npy"), data)
-    print(data.shape)
+
+    if os.path.exists(os.path.join(dir, "dtdata.npy")):
+        data = np.load(os.path.join(dir, "dtdata.npy"))
+    elif os.path.exists("dtdata.npy"):
+        data = np.load("dtdata.npy")
+    else:
+        data = create_tif_box(params, dir)
     print("Loaded tif data.")
+    print("Shape:", data.shape)
     print("Min intensity of tifs:", np.nanmin(data))
     print("Max intensity of tifs:", np.nanmax(data))
 
     # The data format is:
     # data[x, y, t] (i.e. the frame # is the last index)
 
-    drshape = data.shape
-    print(drshape)
-    drdata = np.zeros(drshape, dtype=np.float64)
-    print("Created empty data.")
-    drdata.fill(np.nan)
-    print("Filled with nans.")
-    #drdata[:, :, :, 0] = data
     drdata = data.copy()
-    print("Set initial data.")
-
     width = 1.0
 
     zip2where = lambda t: (np.array(next(t)), np.array(next(t)))
@@ -54,7 +57,7 @@ def main():
     for R in range(*dr_range):
         R = float(R)
         print("dR: {}".format(R))
-        R_pixel_positions = load_R_pixel_positions(pixel_positions, R, width)
+        R_pixel_positions = load_R_pixel_positions(params["dataset_key"], pixel_positions, R, width)
         print("Finished loading R_pixel_positions")
 
         for (R,x,y), positions in R_pixel_positions.items():

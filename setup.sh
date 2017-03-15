@@ -1,5 +1,6 @@
+# Pass in the dataset key, e.g. "C234"
 mkdir results
-#mkdir results/dataset_key  # TODO
+mkdir results/$1
 mkdir R2xy_data
 mkdir R2xy_data/R=0.0
 mkdir R2xy_data/R=1.0

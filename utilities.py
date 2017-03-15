@@ -61,13 +61,13 @@ def load_tif_data(nframes, filename_base, xstart=0, xend=None, ystart=0, yend=No
     return data
 
 
-def load_R_pixel_positions(pixel_positions, R, width):
+def load_R_pixel_positions(dataset_key, pixel_positions, R, width):
     R2_start = R*R
     R2_end = (R+width)*(R+width)
 
     R_pixel_positions = {}
     for k, (x,y) in enumerate(pixel_positions):
-        fn = "R2xy_data/R={r}/R={r}.({x},{y}).npy".format(r=R, x=x, y=y)
+        fn = "results/{key}/R2xy_data/R={r}/R={r}.({x},{y}).npy".format(key=dataset_key, r=R, x=x, y=y)
         try:
             r_away = np.load(fn)
         except IOError:
