@@ -1,0 +1,8 @@
+Download the tif data and put the tifs into a directory called `tifs`. Clone this repo. This repo and the `tifs` directory should be located in the same directory.
+
+Run `setup.sh` in this repo.  This will set up the R-data collection and the time axis's normalization conditions, which you should then submit to Condor using `condor_submit submit_R_data.sh && condor_submit submit_T_norm.sh`.
+
+Once those Condor jobs have finished running, `mkdir R2xy_data && mv R*.tar.gz R2xy_data` and `TODO`.
+
+Submit the G4 calculations to Condor using `condor_submit submit_osg.sub`.
+

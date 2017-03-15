@@ -29,11 +29,11 @@ done
 rm -rf R*.tar.gz
 cd ../
 
-python g4spatial_unaveraged.py $@
+python g4spatial.py $@
 
 rm -rf R2xy_data
 """.format(key=params["dataset_key"])
-with open("run_spatial.sh", "w") as :
+with open("run_spatial.sh", "w") as f:
     f.write(run_g4_spatial)
 
 
@@ -45,7 +45,7 @@ requirements = (OpSys == "LINUX") && (OpSysMajorVer == 6)
 +WantFlocking = true
 +WantGlidein = true
 
-executable = run.sh
+executable = run_spatial.sh
 arguments = $(X) $(Y)
 
 output = $(Cluster)_$(Process).out
@@ -62,9 +62,35 @@ request_disk = 4GB
 
 queue X, Y from inputs1.in
 """.format(key=params["dataset_key"])
-with open("submit_osg.sub", "w") as :
-    f.write(submit_osh)
+with open("submit_osg.sub", "w") as f:
+    f.write(submit_osg)
 
 
+
+
+submit_Rs = """
+universe = vanilla
+
+requirements = (OpSys == "LINUX") && (OpSysMajorVer == 6)
+
+executable = run_R_data.sh
+arguments = $(R)
+
+output = $(Cluster)_$(Process).out
+error = $(Cluster)_$(Process).err
+log = $(Cluster).log
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = run_R_data.sh, create_R_data.py, utilities.py, mask_{key}.txt
+
+request_cpus = 1
+request_memory = 2400MB
+request_disk = 4GB
+
+queue R from input_Rs.in
+""".format(key=params["dataset_key"])
+with open("submit_Rs.sub", "w") as f:
+    f.write(submit_Rs)
 
 

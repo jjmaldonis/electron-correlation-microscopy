@@ -1,0 +1,16 @@
+{
+    "dataset_key": "C234",
+    "tif_filename_base": "C234_2s",
+    "Rscale": 0.33,
+    "Tscale": 2.0,
+    "nframes": 3967,
+    "dT range": [0, 101],
+    "dR range": [0, 11],
+
+    "image size": [208, 198],
+
+    "tif xdomain": [0, 208],
+    "tif ydomain": [0, 198],
+
+    "rotate mask": true
+}

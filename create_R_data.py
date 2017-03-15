@@ -26,7 +26,6 @@ def main():
     print("Loaded masked positions.")
 
     data = load_tif_data(nframes,
-                         #xsize=params["image size"][0], ysize=params["image size"][1],
                          filename_base=params["tif_filename_base"],
                         )
     np.save("dtdata.npy", data)
@@ -37,7 +36,6 @@ def main():
 
     drshape = tuple(list(data.shape) + [dr_range[1]-dr_range[0]])
     print(drshape)
-    #drdata = np.zeros(drshape, dtype=np.uint64)
     drdata = np.zeros(drshape, dtype=np.float64)
     print("Created empty data.")
     drdata.fill(np.nan)
@@ -45,7 +43,6 @@ def main():
     drdata[:, :, :, 0] = data
     print("Set initial data.")
     assert (drdata[:, :, :, 0] == data).all()
-    #assert (drdata[:, :, :, 1:] == np.nan).all()
     assert len(np.where(~np.isnan(drdata[:, :, :, 1:]))[0]) == 0
     print("Ran checks on initial data.")
     np.save("initialized_drdata.npy", drdata)
