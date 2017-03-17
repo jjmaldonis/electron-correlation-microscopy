@@ -20,7 +20,7 @@ for direc in ["results/{}/R2xy_data/R={}.0".format(params["dataset_key"], R) for
 
 # This should pull the *.tar.gz from squid and untar it, revealing the "tif" folder
 # The mask must already be in place
-subprocess.call(["setup_py.sh", params["dataset_key"]])
+#subprocess.call(["setup_py.sh", params["dataset_key"]])
 
 
 def make_scripts():
