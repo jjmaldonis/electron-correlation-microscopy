@@ -1,8 +1,8 @@
 {
-    "dataset_key": "C234",
-    "tif_filename_base": "C234_2s",
+    "dataset_key": "242C0.5s4000f",
+    "tif_filename_base": "C246",
     "Rscale": 0.33,
-    "Tscale": 2.0,
+    "Tscale": 0.5,
     "dT range": [0, 101],
     "dR range": [0, 11],
 

@@ -1,0 +1,10 @@
+{
+    "dataset_key": "246C0.25s4071f",
+    "tif_filename_base": "Aligned_C246_0.25s",
+    "Rscale": 0.3293,
+    "Tscale": 0.25,
+    "dT range": [0, 101],
+    "dR range": [0, 11],
+
+    "rotate mask": true
+}
