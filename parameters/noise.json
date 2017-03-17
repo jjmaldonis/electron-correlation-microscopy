@@ -1,0 +1,8 @@
+{
+    "dataset_key": "noise",
+    "Rscale": 1.0,
+    "Tscale": 1.0,
+    "dT range": [0, 51],
+    "dR range": [0, 11],
+    "rotate mask": false
+}

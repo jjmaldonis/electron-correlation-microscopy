@@ -76,6 +76,13 @@ def main():
 
         np.save(os.path.join(dir, "drdata_{R}.npy".format(R=int(R))), drdata)
 
+    dtdrdata_shape = tuple(list(drdata.shape) + [rsize])
+    dtdrdata = np.zeros(dtdrdata_shape)
+    for R in range(*dr_range):
+        drdata = np.load(os.path.join(dir, "drdata_{R}.npy".format(R=int(R))))
+        dtdrdata[:, :, :, R] = drdata
+    np.save(os.path.join(dir, "dtdrdata.npy"), dtdrdata)
+
 
 if __name__ == "__main__":
     main()

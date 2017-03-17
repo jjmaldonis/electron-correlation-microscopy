@@ -17,7 +17,7 @@ def load_mask(filename=None, dataset_key=None, rotate_mask=True, xstart=0, xend=
     if filename is None:
         head, tail = os.path.split(__file__)
         filename = os.path.join(head, "masks/mask_{key}.txt".format(key=dataset_key))
-    mask = np.loadtxt(filename, skiprows=1)
+    mask = np.loadtxt(filename)
     mask = np.rot90(np.fliplr(mask))
     if xend is None:
         xend = mask.shape[0]
