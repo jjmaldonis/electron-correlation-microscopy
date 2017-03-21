@@ -10,10 +10,14 @@ python setup.py $1
 
 DSKEY="$(python get_dataset_key.py $1)"
 
-wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/tif_${DSKEY}.tar.gz
-tar -xzf tif_${DSKEY}.tar.gz
+#wget -q http://proxy.chtc.wisc.edu/SQUID/maldonis/tif_${DSKEY}.tar.gz
+#tar -xzf tif_${DSKEY}.tar.gz
 
 python create_R_data.py $1
 
 python g4spatial.py $1
+
+python g2time.py $1
+
+python g2spatial.py $1
 
