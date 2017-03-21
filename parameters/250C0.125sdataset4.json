@@ -1,0 +1,9 @@
+{
+    "dataset_key": "250C0.125sdataset4",
+    "tif_filename_base": "C250_0.125s",
+    "Rscale": 0.251,
+    "Tscale": 0.125,
+    "dT range": [0, 101],
+    "dR range": [0, 11],
+    "rotate mask": true
+}

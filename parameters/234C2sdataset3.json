@@ -1,0 +1,9 @@
+{
+    "dataset_key": "234C2sdataset3",
+    "tif_filename_base": "C234",
+    "Rscale": 0.396,
+    "Tscale": 2.0,
+    "dT range": [0, 101],
+    "dR range": [0, 11],
+    "rotate mask": true
+}
