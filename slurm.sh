@@ -1,11 +1,11 @@
 #!/bin/sh
 
-#SBATCH --job-name=hrmc                  # job name
-#SBATCH --partition=univ                # default "univ" if not specified
+#SBATCH --job-name=g4                  # job name
+#SBATCH --partition=pre                # default "univ" if not specified
 #SBATCH --error=job.%J.err              # error file
 #SBATCH --output=job.%J.out             # output file
 
-#SBATCH --time=7-00:00:00               # run time in days-hh:mm:ss
+#SBATCH --time=1-00:00:00               # run time in days-hh:mm:ss
 
 #SBATCH --nodes=1                      # number of nodes requested (n)
 #SBATCH --ntasks=1                    # required number of CPUs (n)
