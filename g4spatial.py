@@ -5,6 +5,7 @@ import numpy as np
 
 
 def g4(dt, dr, data):
+    # TODO This assumes the background has been replaced with nans
     X, Y, Nt, Nr = data.shape
     Itr = data[:, :, 0:Nt-dt, 0]
     Idtr = data[:, :, dt:Nt, 0]
@@ -17,11 +18,11 @@ def g4(dt, dr, data):
 
 def g4_from_slices(dt, dr, data0, data_dr):
     assert data0.shape == data_dr.shape
-    X, Y, Nt = data0.shape
-    Itr = data0[:, :, 0:Nt-dt]
-    Idtr = data0[:, :, dt:Nt]
-    Itdr = data_dr[:, :, 0:Nt-dt]
-    Idtdr = data_dr[:, :, dt:Nt]
+    Nt = data0.shape[-1]
+    Itr = data0[:, 0:Nt-dt]
+    Idtr = data0[:, dt:Nt]
+    Itdr = data_dr[:, 0:Nt-dt]
+    Idtdr = data_dr[:, dt:Nt]
     return np.nanmean(Itr * Idtr * Itdr * Idtdr) / (
             np.nanmean(Itr) * np.nanmean(Idtr) * np.nanmean(Itdr) * np.nanmean(Idtdr)
            )
@@ -40,6 +41,10 @@ def main():
     tsize = dt_range[1] - dt_range[0]
     rsize = dr_range[1] - dr_range[0]
 
+    mask = load_mask(dataset_key=params["dataset_key"], rotate_mask=params["rotate mask"])
+    print("Loaded mask.")
+    pixel_positions = load_pixel_positions(mask)
+    print("Loaded masked positions.")
 
     if os.path.exists(os.path.join(dir, "dtdata.npy")):
         data0 = np.load(os.path.join(dir, "dtdata.npy"))
@@ -47,6 +52,9 @@ def main():
         data0 = np.load("dtdata.npy")
     else:
         raise RuntimeError("Couldn't find data")
+    print("Loaded tif data.")
+
+    zip2where = lambda t0: (np.array(next(t0)), np.array(next(t0)))
 
     result = np.zeros((rsize, tsize), dtype=np.float)
 
@@ -58,7 +66,7 @@ def main():
     for dr in range(*dr_range):
         data_dr = np.load(os.path.join(dir, "drdata_{}.npy".format(dr)))
         for dt in range(*dt_range):
-            result[dr, dt] = g4_from_slices(dt, dr, data0, data_dr)
+            result[dr, dt] = g4_from_slices(dt, dr, data0[zip2where(zip(*pixel_positions))], data_dr[zip2where(zip(*pixel_positions))])
             print("dr", dr, "dt", dt, result[dr, dt])
 
     np.savetxt(os.path.join(dir, "G4.txt"), result)

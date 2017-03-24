@@ -17,7 +17,7 @@ python create_R_data.py $1
 
 python g4spatial.py $1
 
-python g2time.py $1
+#python g2time.py $1
 
-python g2spatial.py $1
+#python g2spatial.py $1
 
