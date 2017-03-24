@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #SBATCH --job-name=g4                  # job name
-#SBATCH --partition=pre                # default "univ" if not specified
+#SBATCH --partition=univ                # default "univ" if not specified
 #SBATCH --error=job.%J.err              # error file
 #SBATCH --output=job.%J.out             # output file
 

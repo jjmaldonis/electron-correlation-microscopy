@@ -3,6 +3,8 @@ import os
 import json
 import numpy as np
 
+from utilities import load_pixel_positions, load_mask
+
 
 def g4(dt, dr, data):
     # TODO This assumes the background has been replaced with nans
